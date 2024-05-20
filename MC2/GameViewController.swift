@@ -12,6 +12,7 @@ import GameController
 
 class GameViewController: UIViewController {
     var virtualController:GCVirtualController?
+    var tes tes
     
     override func viewDidLoad() {
         super.viewDidLoad()
