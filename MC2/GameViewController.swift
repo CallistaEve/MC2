@@ -13,6 +13,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        ted
         
         // create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
