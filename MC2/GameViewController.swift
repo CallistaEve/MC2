@@ -13,8 +13,8 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        ted
         
+        SetupController()
         // create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
         
@@ -100,6 +100,18 @@ class GameViewController: UIViewController {
             
             SCNTransaction.commit()
         }
+    }
+    
+    func setupController(){
+        let controllerConfig = GCVirtualController.Configuration()
+        
+        controllerConfig.elements = [
+        GCInputLeftThumbstick
+        ]
+        
+        let controller = GCVirtualController(configuration: controllerConfig)
+        controller.connect()
+        GCVirtualController() = controller
     }
     
     override var prefersStatusBarHidden: Bool {
