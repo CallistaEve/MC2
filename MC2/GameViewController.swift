@@ -11,11 +11,14 @@ import SceneKit
 import GameController
 
 class GameViewController: UIViewController {
-
+    var virtualController:GCVirtualController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        Tes Github
+
+
         
+        setupController()
         // create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
         
@@ -103,13 +106,25 @@ class GameViewController: UIViewController {
         }
     }
     
+    func setupController(){
+        let controllerConfig = GCVirtualController.Configuration()
+        
+        controllerConfig.elements = [
+        GCInputLeftThumbstick
+        ]
+        
+        let controller = GCVirtualController(configuration: controllerConfig)
+        controller.connect()
+        virtualController = controller
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .landscape
         } else {
             return .all
         }
