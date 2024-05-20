@@ -8,13 +8,15 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import GameController
 
 class GameViewController: UIViewController {
-
+    var virtualController:GCVirtualController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        SetupController()
+        setupController()
         // create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
         
@@ -111,7 +113,7 @@ class GameViewController: UIViewController {
         
         let controller = GCVirtualController(configuration: controllerConfig)
         controller.connect()
-        GCVirtualController() = controller
+        virtualController = controller
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -120,7 +122,7 @@ class GameViewController: UIViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .landscape
         } else {
             return .all
         }
