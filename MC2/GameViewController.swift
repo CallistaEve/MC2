@@ -10,6 +10,7 @@ import QuartzCore
 import SceneKit
 import GameController
 
+
 class GameViewController: UIViewController {
     var virtualController:GCVirtualController?
     
@@ -17,7 +18,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
 
-        
         setupController()
         // create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
