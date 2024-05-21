@@ -10,12 +10,14 @@ import QuartzCore
 import SceneKit
 import GameController
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate {
-    var virtualController: GCVirtualController?
-    var ship: SCNNode!
 
+
+class GameViewController: UIViewController {
+    var virtualController:GCVirtualController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
 
         setupController()
 
