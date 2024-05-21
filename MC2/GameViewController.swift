@@ -10,12 +10,13 @@ import QuartzCore
 import SceneKit
 import GameController
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate {
-    var virtualController: GCVirtualController?
-    var ship: SCNNode!
 
+class GameViewController: UIViewController {
+    var virtualController:GCVirtualController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
 
         setupController()
 
@@ -45,7 +46,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
 
         // Retrieve the ship node
-        ship = scene.rootNode.childNode(withName: "ship", recursively: true)
+//        ship = scene.rootNode.childNode(withName: "ship", recursively: true)
 
         // Retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -53,8 +54,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // Set the scene to the view
         scnView.scene = scene
 
-        // Set the view's delegate
-        scnView.delegate = self
+//        // Set the view's delegate
+//        scnView.delegate = self
 
         // Allows the user to manipulate the camera
         scnView.allowsCameraControl = true
@@ -127,8 +128,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             let yValue = thumbstick.yAxis.value
 
             // Update ship position based on thumbstick values (adjust values as needed)
-            ship.position.x += Float(xValue) * 0.1
-            ship.position.z += Float(yValue) * 0.1
+//            ship.position.x += Float(xValue) * 0.1
+//            ship.position.z += Float(yValue) * 0.1
         }
     }
 
