@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "square.usdc",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
