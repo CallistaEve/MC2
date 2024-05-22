@@ -1,10 +1,3 @@
-//
-//  GameViewController.swift
-//  MC2
-//
-//  Created by Evelyn Callista Yaurentius on 18/05/24.
-//
-
 import UIKit
 import QuartzCore
 import SceneKit
@@ -13,6 +6,8 @@ import GameController
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var virtualController: GCVirtualController?
     var ship: SCNNode!
+    var cube: SCNNode!
+    var secondShip: SCNNode!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +16,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         // Create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
-
+    
         // Create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -46,6 +41,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         // Retrieve the ship node
         ship = scene.rootNode.childNode(withName: "ship", recursively: true)
+        
+        // Load the untitled.dae asset
+        cube = scene.rootNode.childNode(withName: "untitled", recursively: true)
+
+        // Load the second ship (or create a new plane)
+        secondShip = scene.rootNode.childNodes[0]
+        
+        // Position the second ship relative to the first one
+        secondShip.position = SCNVector3(5, 0, 0) // Adjust as needed
+
+        // Add the second ship to the scene's root node
+        scene.rootNode.addChildNode(secondShip)
 
         // Retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -56,7 +63,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // Set the view's delegate
         scnView.delegate = self
 
-        // Allows the user to manipulate the camera
+        // Disables the user from manipulating the camera
         scnView.allowsCameraControl = true
 
         // Show statistics such as fps and timing information
@@ -69,6 +76,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
     }
+    
+    
 
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -108,20 +117,41 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
     func setupController() {
         let controllerConfig = GCVirtualController.Configuration()
-        controllerConfig.elements = [
-            GCInputLeftThumbstick
-        ]
+        controllerConfig.elements = [GCInputLeftThumbstick, GCInputButtonA, GCInputButtonB]
 
-        let controller = GCVirtualController(configuration: controllerConfig)
-        controller.connect()
-        virtualController = controller
+        virtualController = GCVirtualController(configuration: controllerConfig)
+        virtualController?.connect()
+
+        virtualController?.controller?.extendedGamepad?.valueChangedHandler = { [weak self] gamepad, element in
+            self?.virtualControllerInput(gamepad: gamepad, element: element)
+        }
+    }
+
+    func virtualControllerInput(gamepad: GCExtendedGamepad, element: GCControllerElement) {
+        if element == gamepad.leftThumbstick {
+            let xValue = gamepad.leftThumbstick.xAxis.value
+            let yValue = gamepad.leftThumbstick.yAxis.value
+
+            // Update ship position based on thumbstick values (adjust values as needed)
+            moveShip(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue)))
+        }
+    }
+    
+    
+
+    func moveShip(direction: SCNVector3) {
+//         This function will update the ship's position continuously based on input
+        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(0.3) )
+        ship.runAction(moveAction)
+        
+//        ship.position.x += direction.x
+//        ship.position.z += direction.z
     }
 
     // Override this method to perform per-frame game logic
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         guard let virtualController = virtualController else { return }
 
-        // Get left thumbstick values
         if let thumbstick = virtualController.controller?.extendedGamepad?.leftThumbstick {
             let xValue = thumbstick.xAxis.value
             let yValue = thumbstick.yAxis.value
