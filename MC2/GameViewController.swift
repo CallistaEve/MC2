@@ -56,8 +56,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // Set the scene to the view
         scnView.scene = scene
 
-        // Set the view's delegate
-        scnView.delegate = self
+//        // Set the view's delegate
+//        scnView.delegate = self
 
         // Disables the user from manipulating the camera
         scnView.allowsCameraControl = true
@@ -163,7 +163,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
           chicken.position.x += Float(xValue) * 0.1
           chicken.position.y += Float(yValue) * 0.1
       }
-
       // Update camera position to follow the ship with an offset
       let cameraOffset = SCNVector3(x: 0, y: 5, z: 0) // Adjust offset values for desired view
       let newCameraPosition = SCNVector3(x: chicken.position.x, y: chicken.position.y , z: 0)
