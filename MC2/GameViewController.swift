@@ -6,8 +6,6 @@ import GameController
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var virtualController: GCVirtualController?
     var ship: SCNNode!
-    var cube: SCNNode!
-    var secondShip: SCNNode!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,7 +13,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         setupController()
 
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene(named: "art.scnassets/rumah ayam copy.scn")!
     
         // Create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -40,19 +38,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
 
         // Retrieve the ship node
-        ship = scene.rootNode.childNode(withName: "ship", recursively: true)
+        ship = scene.rootNode.childNode(withName: "chicken", recursively: true)
+        let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
+        ship.runAction(moveAction)
         
-        // Load the untitled.dae asset
-        cube = scene.rootNode.childNode(withName: "untitled", recursively: true)
+        if let retrievedShip = scene.rootNode.childNode(withName: "chicken", recursively: true) {
+          ship = retrievedShip
+        } else {
+          // Handle the case where the node is not found (print an error message, etc.)
+          print("Error: Could not find node named 'chicken' in the scene.")
+        }
 
-        // Load the second ship (or create a new plane)
-        secondShip = scene.rootNode.childNodes[0]
-        
-        // Position the second ship relative to the first one
-        secondShip.position = SCNVector3(5, 0, 0) // Adjust as needed
-
-        // Add the second ship to the scene's root node
-        scene.rootNode.addChildNode(secondShip)
 
         // Retrieve the SCNView
         let scnView = self.view as! SCNView
