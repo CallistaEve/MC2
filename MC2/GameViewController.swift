@@ -5,7 +5,7 @@ import GameController
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var virtualController: GCVirtualController?
-    var ship: SCNNode!
+    var chicken: SCNNode!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +38,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
 
         // Retrieve the ship node
-        ship = scene.rootNode.childNode(withName: "chicken", recursively: true)
+        chicken = scene.rootNode.childNode(withName: "chicken", recursively: true)
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
-        ship.runAction(moveAction)
+        chicken.runAction(moveAction)
         
         if let retrievedShip = scene.rootNode.childNode(withName: "chicken", recursively: true) {
-          ship = retrievedShip
+            chicken = retrievedShip
         } else {
           // Handle the case where the node is not found (print an error message, etc.)
           print("Error: Could not find node named 'chicken' in the scene.")
@@ -129,16 +129,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             let yValue = gamepad.leftThumbstick.yAxis.value
 
             // Update ship position based on thumbstick values (adjust values as needed)
-            moveShip(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue)))
+            moveChicken(direction: SCNVector3(x: -Float(xValue), y: -Float(yValue), z: 0 ))
+        }
+        if element == gamepad.buttonA {
+            jumpChicken(direction: SCNVector3(x: 0, y: 0, z: 5 ))
         }
     }
     
-    
+    func jumpChicken(direction: SCNVector3){
+        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(0.3) )
+        chicken.runAction(moveAction)
+//        chicken.runAction(SCNAction.move(by: SCNVector3(x: 0, y: 0, z: 0), duration: 0.3))
+    }
 
-    func moveShip(direction: SCNVector3) {
+    func moveChicken(direction: SCNVector3) {
 //         This function will update the ship's position continuously based on input
         let moveAction = SCNAction.move(by: direction, duration: TimeInterval(0.3) )
-        ship.runAction(moveAction)
+        chicken.runAction(moveAction)
         
 //        ship.position.x += direction.x
 //        ship.position.z += direction.z
@@ -146,17 +153,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
     // Override this method to perform per-frame game logic
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        guard let virtualController = virtualController else { return }
+        let scene = SCNScene(named: "art.scnassets/rumah ayam copy.scn")!
+      guard let virtualController = virtualController, let chicken = chicken else { return }
 
-        if let thumbstick = virtualController.controller?.extendedGamepad?.leftThumbstick {
-            let xValue = thumbstick.xAxis.value
-            let yValue = thumbstick.yAxis.value
-
-            // Update ship position based on thumbstick values (adjust values as needed)
-//            ship.position.x += Float(xValue) * 0.1
-//            ship.position.z += Float(yValue) * 0.1
-        }
+      // Update ship position based on thumbstick values (adjust values as needed)
+      if let thumbstick = virtualController.controller?.extendedGamepad?.leftThumbstick {
+        let xValue = thumbstick.xAxis.value
+        let yValue = thumbstick.yAxis.value
+          chicken.position.x += Float(xValue) * 0.1
+          chicken.position.y += Float(yValue) * 0.1
+      }
+      // Update camera position to follow the ship with an offset
+      let cameraOffset = SCNVector3(x: 0, y: 5, z: 0) // Adjust offset values for desired view
+      let newCameraPosition = SCNVector3(x: chicken.position.x, y: chicken.position.y , z: 0)
+      
+      // Animate camera movement smoothly
+      SCNTransaction.begin()
+      SCNTransaction.animationDuration = 0.1
+      scene.rootNode.childNode(withName: "camera", recursively: true)?.position = newCameraPosition
+      SCNTransaction.commit()
     }
+
 
     override var prefersStatusBarHidden: Bool {
         return true
