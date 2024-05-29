@@ -13,15 +13,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         setupController()
 
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/rumah ayam copy.scn")!
+        let scene = SCNScene(named: "art.scnassets/Stage/Rumah Ayam.scn")!
     
         // Create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
-
-        // Place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+//        let cameraNode = SCNNode()
+//        cameraNode.camera = SCNCamera()
+//        scene.rootNode.addChildNode(cameraNode)
+//
+//        // Place the camera
+//        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
 
         // Create and add a light to the scene
         let lightNode = SCNNode()
@@ -129,7 +129,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             let yValue = gamepad.leftThumbstick.yAxis.value
 
             // Update ship position based on thumbstick values (adjust values as needed)
-            moveChicken(direction: SCNVector3(x: -Float(xValue), y: -Float(yValue), z: 0 ))
+            moveChicken(direction: SCNVector3(x: -Float(xValue), y: 0, z: Float(yValue) ))
         }
         if element == gamepad.buttonA {
             jumpChicken(direction: SCNVector3(x: 0, y: 0, z: 5 ))
@@ -153,7 +153,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
     // Override this method to perform per-frame game logic
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        let scene = SCNScene(named: "art.scnassets/rumah ayam copy.scn")!
+        let scene = SCNScene(named: "art.scnassets/Stage/Rumah Ayam.scn")!
       guard let virtualController = virtualController, let chicken = chicken else { return }
 
       // Update ship position based on thumbstick values (adjust values as needed)
@@ -161,7 +161,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let xValue = thumbstick.xAxis.value
         let yValue = thumbstick.yAxis.value
           chicken.position.x += Float(xValue) * 0.1
-          chicken.position.y += Float(yValue) * 0.1
+          chicken.position.z += Float(yValue) * 0.1
       }
       // Update camera position to follow the ship with an offset
       let cameraOffset = SCNVector3(x: 0, y: 5, z: 0) // Adjust offset values for desired view
