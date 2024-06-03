@@ -9,8 +9,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var camera: SCNNode!
     var sounds:[String:SCNAudioSource] = [:]
     var chickenPlayerData = ChickenPlayerData().playerChicken
+    var backgroundMusic: SCNAudioSource!
+    var slapSound: SCNAudioSource!
+    var walkSound: SCNAudioSource!
     
     override func viewDidLoad() {
+        var isWalk = chickenPlayerData.isWalk = false
         super.viewDidLoad()
 
         setupController()
@@ -35,7 +39,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // Create a new scene
         let scene = SCNScene(named: "art.scnassets/Stage/Rumah Ayam.scn")!
     
-//         Create and add a camera to the scene
+        // Create and add a camera to the scene
         let cameraNode = SCNCameraController()
         
         // Create and add a light to the scene
@@ -57,7 +61,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         camera = scene.rootNode.childNode(withName: "camera", recursively: true)
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
-//        let moveCamera = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
         
         chicken.runAction(moveAction)
         camera.runAction(moveAction)
@@ -68,11 +71,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // Set the scene to the view
         scnView.scene = scene
         
-        //        // Set the view's delegate
-        //        scnView.delegate = self
-
-                // Disables the user from manipulating the camera
-        //        scnView.allowsCameraControl = true
+                // Set the view's delegate
+//                scnView.delegate = self
+//
+//                // Disables the user from manipulating the camera
+//                scnView.allowsCameraControl = true
 
                 // Show statistics such as fps and timing information
                 scnView.showsStatistics = true
@@ -96,16 +99,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             
         }
         if element == gamepad.buttonB {
-//            jumpChicken(direction: SCNVector3(x: 0, y: -chickenPlayerData.jumpCount, z: 0))
-            let slapSound = SCNAudioSource(fileNamed: chickenPlayerData.slapVoice.randomElement()?.rawValue ?? "Slap1.mp3")!
             chicken.runAction(SCNAction.playAudio(slapSound, waitForCompletion: true))
         }
     }
     
     func setupSounds(){
-        let backgroundMusic = SCNAudioSource(fileNamed: chickenPlayerData.backgroundSound)!
-        let slapSound = SCNAudioSource(fileNamed: chickenPlayerData.slapVoice.randomElement()?.rawValue ?? "Slap1.mp3")!
-        let walkSound = SCNAudioSource(fileNamed: "walk.wav")!
+        backgroundMusic = SCNAudioSource(fileNamed: chickenPlayerData.backgroundSound)!
+        slapSound = SCNAudioSource(fileNamed: chickenPlayerData.slapVoice.randomElement()?.rawValue ?? "Slap1.mp3")!
+        walkSound = SCNAudioSource(fileNamed: chickenPlayerData.footstepSound)!
         
         slapSound.load()
         walkSound.load()
@@ -128,7 +129,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let moveAction = SCNAction.move(by: direction, duration: TimeInterval(3) )
         chicken.runAction(moveAction)
         camera.runAction(moveAction)
-//        chicken.runAction(SCNAction.move(by: SCNVector3(x: 0, y: 0, z: 0), duration: 0.3))
     }
     
     func moveCamera(direction:SCNVector3){
@@ -137,11 +137,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
 
     func moveChicken(direction: SCNVector3) {
-//         This function will update the ship's position continuously based on input
         let moveAction = SCNAction.move(by: direction, duration: TimeInterval(5) )
-//        let jumpSound = sounds["Slap1"]!
-        let slapSound = SCNAudioSource(fileNamed: chickenPlayerData.slapVoice.randomElement()?.rawValue ?? "Slap1.mp3")!
-        chicken.runAction(SCNAction.playAudio(slapSound, waitForCompletion: true))
+        chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
         chicken.runAction(moveAction)
     }
 

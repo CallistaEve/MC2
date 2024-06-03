@@ -12,12 +12,14 @@ struct ChickenModel{
     var jumpCount: Float
     var slapVoice: [SlapVoice]
     var backgroundSound: String
+    var footstepSound: String
     
-    init(isWalk: Bool, jump: Float, slapVoice: [SlapVoice], backgroundSound: String) {
+    init(isWalk: Bool, jump: Float, slapVoice: [SlapVoice], backgroundSound: String, footstepSound: String) {
         self.isWalk = isWalk
         self.jumpCount = jump
         self.slapVoice = slapVoice
         self.backgroundSound = backgroundSound
+        self.footstepSound = footstepSound
     }
     enum SlapVoice: String{
         case slap1 = "Slap1.mp3"
@@ -27,5 +29,5 @@ struct ChickenModel{
 }
 
 class ChickenPlayerData {
-    var playerChicken: ChickenModel = ChickenModel(isWalk: false, jump: 20, slapVoice: [.slap1, .slap2, .slap3], backgroundSound: "ES_Always Too Much - Spectacles Wallet and Watch.mp3")
+    var playerChicken: ChickenModel = ChickenModel(isWalk: false, jump: 20, slapVoice: [.slap1, .slap2, .slap3], backgroundSound: "ES_Always Too Much - Spectacles Wallet and Watch.mp3", footstepSound: "footstep chicken.mp3")
 }
