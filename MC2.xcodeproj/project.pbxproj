@@ -16,6 +16,7 @@
 		FA3B4E3E2BF8FDC100417B10 /* MC2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3B4E3D2BF8FDC100417B10 /* MC2Tests.swift */; };
 		FA3B4E482BF8FDC100417B10 /* MC2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3B4E472BF8FDC100417B10 /* MC2UITests.swift */; };
 		FA3B4E4A2BF8FDC100417B10 /* MC2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3B4E492BF8FDC100417B10 /* MC2UITestsLaunchTests.swift */; };
+		FA4245C82C098966007FF8B1 /* footstep chicken.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA4245C62C098966007FF8B1 /* footstep chicken.mp3 */; };
 		FAD339BA2C0804140082D43A /* GameViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD339B92C0804140082D43A /* GameViewController2.swift */; };
 		FAD339BD2C0807930082D43A /* MotionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD339BC2C0807930082D43A /* MotionHelper.swift */; };
 		FAD33A382C081EE50082D43A /* ChickenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD33A372C081EE50082D43A /* ChickenModel.swift */; };
@@ -56,6 +57,7 @@
 		FA3B4E432BF8FDC100417B10 /* MC2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MC2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA3B4E472BF8FDC100417B10 /* MC2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MC2UITests.swift; sourceTree = "<group>"; };
 		FA3B4E492BF8FDC100417B10 /* MC2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MC2UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FA4245C62C098966007FF8B1 /* footstep chicken.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "footstep chicken.mp3"; sourceTree = "<group>"; };
 		FAD339B92C0804140082D43A /* GameViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController2.swift; sourceTree = "<group>"; };
 		FAD339BC2C0807930082D43A /* MotionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionHelper.swift; sourceTree = "<group>"; };
 		FAD33A372C081EE50082D43A /* ChickenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChickenModel.swift; sourceTree = "<group>"; };
@@ -146,6 +148,14 @@
 			path = MC2UITests;
 			sourceTree = "<group>";
 		};
+		FA4245C72C098966007FF8B1 /* Walking */ = {
+			isa = PBXGroup;
+			children = (
+				FA4245C62C098966007FF8B1 /* footstep chicken.mp3 */,
+			);
+			path = Walking;
+			sourceTree = "<group>";
+		};
 		FAD339BB2C08077E0082D43A /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +167,7 @@
 		FAD339BE2C0815BC0082D43A /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				FA4245C72C098966007FF8B1 /* Walking */,
 				FAD33A3E2C0827600082D43A /* Slap */,
 				FAD33A392C0821300082D43A /* ES_Always Too Much - Spectacles Wallet and Watch.mp3 */,
 			);
@@ -291,6 +302,7 @@
 				FAD33A402C0827610082D43A /* Slap2.mp3 in Resources */,
 				FAD33A3F2C0827610082D43A /* Slap1.mp3 in Resources */,
 				FAD33A3A2C0821300082D43A /* ES_Always Too Much - Spectacles Wallet and Watch.mp3 in Resources */,
+				FA4245C82C098966007FF8B1 /* footstep chicken.mp3 in Resources */,
 				FA3B4E2F2BF8FDC000417B10 /* Base in Resources */,
 				FA3B4E342BF8FDC100417B10 /* Base in Resources */,
 			);
