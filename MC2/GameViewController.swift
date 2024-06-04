@@ -37,7 +37,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     func setupNode(){
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/Stage/Rumah Ayam.scn")!
+        let scene = SCNScene(named: "art.scnassets/Stage/Stage1.scn")!
     
         // Create and add a camera to the scene
         let cameraNode = SCNCameraController()
@@ -57,7 +57,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(ambientLightNode)
 
         // Retrieve the ship node
-        chicken = scene.rootNode.childNode(withName: "chicken", recursively: true)
+        chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)
         camera = scene.rootNode.childNode(withName: "camera", recursively: true)
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
