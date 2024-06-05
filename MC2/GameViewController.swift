@@ -66,7 +66,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         // Retrieve the ship node
         chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)
         
-        camera = scene.rootNode.childNode(withName: "cameraFocus", recursively: true)
+        camera = scene.rootNode.childNode(withName: "camera", recursively: true)
         
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
