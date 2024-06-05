@@ -3,7 +3,7 @@ import QuartzCore
 import SceneKit
 import GameController
 
-class GameViewController:UIViewController, SCNPhysicsContactDelegate{
+class GameViewController3:UIViewController, SCNPhysicsContactDelegate, SCNSceneRendererDelegate{
     var virtualController: GCVirtualController?
     
     enum bitmask: Int{
@@ -12,10 +12,16 @@ class GameViewController:UIViewController, SCNPhysicsContactDelegate{
         case villager = 4
     }
     
+    var chicken: SCNNode!
+    var camera: SCNNode!
+    var sounds:[String:SCNAudioSource] = [:]
+    var chickenPlayerData = ChickenPlayerData().playerChicken
+    var backgroundMusic: SCNAudioSource!
+    var slapSound: SCNAudioSource!
+    var walkSound: SCNAudioSource!
+    
     var cameraNode = SCNNode()
     
-    var chicken = SCNNode()
-    var camera = SCNNode()
     var object = SCNNode()
     var floor = SCNNode()
     
@@ -23,8 +29,9 @@ class GameViewController:UIViewController, SCNPhysicsContactDelegate{
         {
             super.viewDidLoad()
             setupController()
+            setupSounds()
             
-            let scene = SCNScene(named: "art.scnassets/Stage/Scene.scn")!
+            let scene = SCNScene(named: "art.scnassets/Stage/Kamar.scn")!
             
             scene.physicsWorld.contactDelegate = self
             
@@ -33,9 +40,9 @@ class GameViewController:UIViewController, SCNPhysicsContactDelegate{
             
             let dummyNode = SCNNode()
             scene.rootNode.addChildNode(dummyNode)
-            
+            camera = scene.rootNode.childNode(withName: "camera", recursively: true)
             chicken = scene.rootNode.childNode(withName: "Chicken reference", recursively: true)!
-            object = scene.rootNode.childNode(withName: "object", recursively: true)!
+            object = scene.rootNode.childNode(withName: "root", recursively: true)!
 //            floor = scene.rootNode.childNode(withName: "floor", recursively: true)!
             if let dummyNode = scene.rootNode.childNode(withName: "dummyNode", recursively: false) {
               dummyNode.position = SCNVector3(0, -5, -5)
@@ -52,7 +59,8 @@ class GameViewController:UIViewController, SCNPhysicsContactDelegate{
                  // ... (rest of chicken physics body setup)
                    chicken.physicsBody?.categoryBitMask = bitmask.player.rawValue  //
                  chicken.physicsBody?.collisionBitMask = bitmask.object.rawValue // Combine categories (floor & object)
-               } else if (node.name == "object") {
+               } 
+                else if (node.name == "root") {
                  object = node
                  object.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: object, options: nil ))
                  // ... (rest of cone physics body setup)
@@ -123,10 +131,42 @@ class GameViewController:UIViewController, SCNPhysicsContactDelegate{
             self?.virtualControllerInput(gamepad: gamepad, element: element)
         }
     }
+    func jumpChicken(direction: SCNVector3){
+        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(3) )
+        chicken.runAction(moveAction)
+        camera.runAction(moveAction)
+    }
+    
+    func moveCamera(direction:SCNVector3){
+        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(5) )
+        camera.runAction(moveAction)
+    }
+
     func moveChicken(direction: SCNVector3) {
         let moveAction = SCNAction.move(by: direction, duration: TimeInterval(5) )
-//        chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
+        chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
         chicken.runAction(moveAction)
+    }
+    func setupSounds(){
+        backgroundMusic = SCNAudioSource(fileNamed: chickenPlayerData.backgroundSound)!
+        slapSound = SCNAudioSource(fileNamed: chickenPlayerData.slapVoice.randomElement()?.rawValue ?? "Slap1.mp3")!
+        walkSound = SCNAudioSource(fileNamed: chickenPlayerData.footstepSound)!
+        
+        slapSound.load()
+        walkSound.load()
+        
+        backgroundMusic.volume = 0.1
+        slapSound.volume = 0.4
+        walkSound.volume = 0.3
+        
+        sounds["Slap1"] = slapSound
+        sounds["walk"] = walkSound
+        
+        backgroundMusic.loops = true
+        backgroundMusic.load()
+        
+        let musicPlayer = SCNAudioPlayer(source: backgroundMusic)
+//        chicken.addAudioPlayer(musicPlayer)
     }
     func virtualControllerInput(gamepad: GCExtendedGamepad, element: GCControllerElement) {
         if element == gamepad.leftThumbstick {

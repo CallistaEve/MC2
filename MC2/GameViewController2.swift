@@ -1,54 +1,156 @@
-////
-////  GameViewController2.swift
-////  MC2
-////
-////  Created by Evelyn Callista Yaurentius on 30/05/24.
-////
-//
 //import UIKit
+//import QuartzCore
 //import SceneKit
+//import GameController
 //
-//class GameViewController: UIViewController{
-//    var sceneView:SCNView!
-//    var scene:SCNScene!
+//class GameViewController:UIViewController, SCNPhysicsContactDelegate, SCNSceneRendererDelegate{
+//    var virtualController: GCVirtualController?
 //    
-//    var chickenNode: SCNNode!
-//    var selfieStickNode:SCNNode!
+//    enum bitmask: Int{
+//        case player = 1
+//        case object = 2
+//        case villager = 4
+//    }
 //    
-//    var motion = MotionHelper()
-//    var motionForce = SCNVector3(x: 0, y: 0, z: 0)
-//    
+//    var chicken: SCNNode!
+//    var camera: SCNNode!
 //    var sounds:[String:SCNAudioSource] = [:]
+//    var chickenPlayerData = ChickenPlayerData().playerChicken
+//    var backgroundMusic: SCNAudioSource!
+//    var slapSound: SCNAudioSource!
+//    var walkSound: SCNAudioSource!
 //    
-//    override func viewDidLoad() {
-//        setupScene()
-//        setupNodes()
-//        setupSounds()
+//    var cameraNode = SCNNode()
+//    
+//    var object = SCNNode()
+//    var floor = SCNNode()
+//    
+//    override func viewDidLoad()
+//        {
+//            super.viewDidLoad()
+//            setupController()
+//            setupSounds()
+//            
+//            let scene = SCNScene(named: "art.scnassets/Stage/Stage1.scn")!
+//            
+//            scene.physicsWorld.contactDelegate = self
+//            
+////            cameraNode.camera = SCNCamera()
+////            cameraNode.camera?.zFar = 500
+//            
+//            let dummyNode = SCNNode()
+//            scene.rootNode.addChildNode(dummyNode)
+//            camera = scene.rootNode.childNode(withName: "cameraFocus", recursively: true)
+//            chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)!
+//            object = scene.rootNode.childNode(withName: "root", recursively: true)!
+////            floor = scene.rootNode.childNode(withName: "floor", recursively: true)!
+//            if let dummyNode = scene.rootNode.childNode(withName: "dummyNode", recursively: false) {
+//              dummyNode.position = SCNVector3(0, -5, -5)
+//              // ... rest of your code using dummyNode
+//            } else {
+//                // Handle the case where DummyNode is not found (optional)
+//                print("Warning: DummyNode not found in scene")
+//            }
+//
+//            scene.rootNode.enumerateChildNodes { (node, _) in
+//               if (node.name == "NewChicken reference") {
+//                 chicken = node
+//                 chicken.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: chicken, options: nil ))
+//                 // ... (rest of chicken physics body setup)
+//                   chicken.physicsBody?.categoryBitMask = bitmask.player.rawValue  //
+//                 chicken.physicsBody?.collisionBitMask = bitmask.object.rawValue // Combine categories (floor & object)
+//               }
+//                else if (node.name == "root") {
+//                 object = node
+//                 object.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: object, options: nil ))
+//                 // ... (rest of cone physics body setup)
+//                   object.physicsBody?.categoryBitMask = bitmask.object.rawValue  // Set cone's category to object
+//               }
+//             }
+//
+//            
+//            // retrieve the SCNView
+//            let scnView = self.view as! SCNView
+//            
+//            let cameraNode = SCNCameraController()
+//            camera = (scene.rootNode.childNode(withName: "camera", recursively: true))!
+//            
+//            // set the scene to the view
+//            scnView.scene = scene
+//            
+//            // allows the user to manipulate the camera
+////            scnView.allowsCameraControl = true
+//            
+//            // show statistics such as fps and timing information
+//            scnView.showsStatistics = true
+//            
+//            
+//            
+//        }
+//    
+////    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+////        let nodeA = contact.nodeA
+////        let nodeB = contact.nodeB
+////
+////        if (nodeA == chicken && nodeB == cone) || (nodeA == cone && nodeB == chicken) {
+////            // Chicken collided with cone
+////            // Get the movement direction from the gamepad input
+////            let gamepad = virtualController?.controller?.extendedGamepad
+////            let xValue = gamepad?.leftThumbstick.xAxis.value ?? 0
+////            let yValue = gamepad?.leftThumbstick.yAxis.value ?? 0
+////            var movementDirection = SCNVector3(x: -Float(xValue), y: 0, z: Float(yValue))
+////
+////            // Check the collision direction and prevent movement in that direction
+////            let contactNormal = contact.contactNormal
+////            if contactNormal.x > 0 {
+////                movementDirection.x = 0
+////            } else if contactNormal.x < 0 {
+////                movementDirection.x = 0
+////            }
+////            if contactNormal.z > 0 {
+////                movementDirection.z = 0
+////            } else if contactNormal.z < 0 {
+////                movementDirection.z = 0
+////            }
+////
+////            // Update chicken movement based on the modified direction
+////            moveChicken(direction: movementDirection)
+////        }
+////    }
+//
+//    
+//    
+//    func setupController() {
+//        let controllerConfig = GCVirtualController.Configuration()
+//        controllerConfig.elements = [GCInputLeftThumbstick, GCInputButtonA, GCInputButtonB]
+//
+//        virtualController = GCVirtualController(configuration: controllerConfig)
+//        virtualController?.connect()
+//
+//        virtualController?.controller?.extendedGamepad?.valueChangedHandler = { [weak self] gamepad, element in
+//            self?.virtualControllerInput(gamepad: gamepad, element: element)
+//        }
+//    }
+//    func jumpChicken(direction: SCNVector3){
+//        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(3) )
+//        chicken.runAction(moveAction)
+//        camera.runAction(moveAction)
 //    }
 //    
-//    func setupScene(){
-//        sceneView = self.view as! SCNView
-//        sceneView.allowsCameraControl = true
-//        scene = SCNScene(named: "art.scnassets/Stage/Scene.scn")
-//        sceneView.scene = scene
-//        
-//        let tapRecognizer = UITapGestureRecognizer()
-//        tapRecognizer.numberOfTapsRequired = 1
-//        tapRecognizer.numberOfTouchesRequired = 1
-//        
-//        tapRecognizer.addTarget(self, action: #selector(GameViewController.sceneViewTapped(recognizer:)))
-//        sceneView.addGestureRecognizer(tapRecognizer)
+//    func moveCamera(direction:SCNVector3){
+//        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(5) )
+//        camera.runAction(moveAction)
 //    }
-//    
-//    func setupNodes(){
-//        chickenNode = scene.rootNode.childNode(withName: "chicken", recursively: true)!
-//        selfieStickNode = scene.rootNode.childNode(withName: "selfieStick", recursively: true)
+//
+//    func moveChicken(direction: SCNVector3) {
+//        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(5) )
+//        chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
+//        chicken.runAction(moveAction)
 //    }
-//    
 //    func setupSounds(){
-//        let backgroundMusic = SCNAudioSource(fileNamed: "ES_Always Too Much - Spectacles Wallet and Watch.mp3")!
-//        let slapSound = SCNAudioSource(fileNamed: "slap.wav")!
-//        let walkSound = SCNAudioSource(fileNamed: "walk.wav")!
+//        backgroundMusic = SCNAudioSource(fileNamed: chickenPlayerData.backgroundSound)!
+//        slapSound = SCNAudioSource(fileNamed: chickenPlayerData.slapVoice.randomElement()?.rawValue ?? "Slap1.mp3")!
+//        walkSound = SCNAudioSource(fileNamed: chickenPlayerData.footstepSound)!
 //        
 //        slapSound.load()
 //        walkSound.load()
@@ -57,42 +159,41 @@
 //        slapSound.volume = 0.4
 //        walkSound.volume = 0.3
 //        
-//        sounds["slap"] = slapSound
+//        sounds["Slap1"] = slapSound
 //        sounds["walk"] = walkSound
 //        
 //        backgroundMusic.loops = true
 //        backgroundMusic.load()
 //        
 //        let musicPlayer = SCNAudioPlayer(source: backgroundMusic)
-//        chickenNode.addAudioPlayer(musicPlayer)
+////        chicken.addAudioPlayer(musicPlayer)
 //    }
-//    @objc func sceneViewTapped (recognizer: UITapGestureRecognizer){
-//        let location = recognizer.location(in: sceneView)
-//        
-//        let hitResults = sceneView.hitTest(location, options: nil)
-//        
-//        if hitResults.count > 0 {
-//            let result = hitResults.first
-//            if let node = result?.node{
-//                if node.name == "chicken"{
-//                    let jumpSound = sounds["walk"]!
-//                    chickenNode.runAction(SCNAction.playAudio(jumpSound, waitForCompletion: false))
-//                    chickenNode.physicsBody?.applyForce(SCNVector3(0, 4, -12), asImpulse: true)
-//                }
+//    func virtualControllerInput(gamepad: GCExtendedGamepad, element: GCControllerElement) {
+//        if element == gamepad.leftThumbstick {
+//            let xValue = gamepad.leftThumbstick.xAxis.value
+//            let yValue = gamepad.leftThumbstick.yAxis.value
+//
+//            // Update ship position based on thumbstick values (adjust values as needed)
+//            moveChicken(direction: SCNVector3(x: -Float(xValue), y: 0, z: Float(yValue) ))
+////            moveCamera(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue) ))
+//        }
+////        if element == gamepad.buttonA {
+////            jumpChicken(direction: SCNVector3(x: 0, y: chickenPlayerData.jumpCount, z: 0))
+////
+////
+////        }
+////        if element == gamepad.buttonB {
+////            chicken.runAction(SCNAction.playAudio(slapSound, waitForCompletion: true))
+////        }
+//    }
+//        override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+//            if UIDevice.current.userInterfaceIdiom == .phone {
+//                return .landscape
+//            } else {
+//                return .all
 //            }
 //        }
-//    }
-//    override var shouldAutorotate: Bool{
-//        return false
-//    }
-//    
-//    override var prefersStatusBarHidden: Bool{
-//        return true
-//    }
-//    
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//    }
 //}
+//
 //
 //
