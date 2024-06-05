@@ -45,7 +45,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     func setupNode(){
         // Create a new scene
         let scene = SCNScene(named: "art.scnassets/Stage/Stage1.scn")!
-    
+//        guard let chickenHouse = scene.rootNode.childNode(withName: "Rumah_Ayam_002", recursively: false) else { return }
+//        chickenHouse.physicsBody?.type = .static
+//        chickenHouse.physicsBody?.
         // Create and add a camera to the scene
         let cameraNode = SCNCameraController()
         
@@ -63,23 +65,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
 
-        // Retrieve the ship node
+        // Retrieve the objects node
         chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)
-        
-        camera = scene.rootNode.childNode(withName: "cameraFocus", recursively: true)
+        object = scene.rootNode.childNode(withName: "plane", recursively: true)
+        camera = scene.rootNode.childNode(withName: "camera", recursively: true)
         
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
         
         chicken.runAction(moveAction)
 //        chicken.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: chicken, options: nil ))
-//        // ... (rest of chicken physics body setup)
-//          chicken.physicsBody?.categoryBitMask = bitmask.player.rawValue  //
-//        chicken.physicsBody?.collisionBitMask = bitmask.object.rawValue // Combine categories (floor & object)
-        
+//        chicken.physicsBody?.categoryBitMask = 1
+//        chicken.physicsBody?.collisionBitMask = 2
+//        
+//        
 //        object.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: object, options: nil ))
-//        // ... (rest of cone physics body setup)
-//          object.physicsBody?.categoryBitMask = bitmask.object.rawValue  //
+//        object.physicsBody?.categoryBitMask = 2
+//        chicken.physicsBody?.collisionBitMask = 1
         
         camera.runAction(moveAction)
         
@@ -108,7 +110,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
             let yValue = gamepad.leftThumbstick.yAxis.value
 
             // Update ship position based on thumbstick values (adjust values as needed)
-            moveChicken(direction: SCNVector3(x: -Float(xValue), y: 0, z: Float(yValue) ))
+            moveChicken(direction: SCNVector3(x: Float(xValue), y: 0, z: Float(yValue) ))
             moveCamera(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue) ))
         }
         if element == gamepad.buttonA {
