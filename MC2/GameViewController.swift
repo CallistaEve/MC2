@@ -68,7 +68,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         // Retrieve the objects node
         chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)
         object = scene.rootNode.childNode(withName: "plane", recursively: true)
-        camera = scene.rootNode.childNode(withName: "cameraFocus", recursively: true)
+        camera = scene.rootNode.childNode(withName: "camera", recursively: true)
         
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
@@ -110,7 +110,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
             let yValue = gamepad.leftThumbstick.yAxis.value
 
             // Update ship position based on thumbstick values (adjust values as needed)
-            moveChicken(direction: SCNVector3(x: -Float(xValue), y: 0, z: Float(yValue) ))
+            moveChicken(direction: SCNVector3(x: Float(xValue), y: 0, z: Float(yValue) ))
             moveCamera(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue) ))
         }
         if element == gamepad.buttonA {
