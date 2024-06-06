@@ -11,9 +11,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     }
     
     var virtualController: GCVirtualController?
+    
     var chicken: SCNNode!
     var object: SCNNode!
+    var root: SCNNode!
     var camera: SCNNode!
+    
     var sounds:[String:SCNAudioSource] = [:]
     var chickenPlayerData = ChickenPlayerData().playerChicken
     var backgroundMusic: SCNAudioSource!
@@ -68,20 +71,26 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         // Retrieve the objects node
         chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)
         object = scene.rootNode.childNode(withName: "plane", recursively: true)
-        camera = scene.rootNode.childNode(withName: "camera", recursively: true)
+        root = scene.rootNode.childNode(withName: "root", recursively: true)
+        camera = scene.rootNode.childNode(withName: "cameraFocus", recursively: true)
         
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
         
         chicken.runAction(moveAction)
-//        chicken.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: chicken, options: nil ))
+//        chicken.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(node: chicken, options: nil ))
+//        chicken.physicsBody?.isAffectedByGravity = true
 //        chicken.physicsBody?.categoryBitMask = 1
-//        chicken.physicsBody?.collisionBitMask = 2
-//        
-//        
+//        chicken.physicsBody?.collisionBitMask = 2 | 4
+//
+//
+//        root.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: root, options: nil ))
+//        root.physicsBody?.categoryBitMask = 2
+//        root.physicsBody?.collisionBitMask = 1
+//
 //        object.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: object, options: nil ))
-//        object.physicsBody?.categoryBitMask = 2
-//        chicken.physicsBody?.collisionBitMask = 1
+//        object.physicsBody?.categoryBitMask = 4
+//        object.physicsBody?.collisionBitMask = 1
         
         camera.runAction(moveAction)
         
@@ -98,7 +107,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
 //                scnView.allowsCameraControl = true
 
                 // Show statistics such as fps and timing information
-                scnView.showsStatistics = true
+//                scnView.showsStatistics = true
 
                 // Configure the view
                 scnView.backgroundColor = UIColor.black
@@ -110,13 +119,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
             let yValue = gamepad.leftThumbstick.yAxis.value
 
             // Update ship position based on thumbstick values (adjust values as needed)
-            moveChicken(direction: SCNVector3(x: Float(xValue), y: 0, z: Float(yValue) ))
+            moveChicken(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue) ))
             moveCamera(direction: SCNVector3(x: Float(xValue), y: 0, z: -Float(yValue) ))
         }
         if element == gamepad.buttonA {
-            jumpChicken(direction: SCNVector3(x: 0, y: chickenPlayerData.jumpCount, z: 0))
-            
-            
+//            if chicken.physicsBody?.velocity.y == 0 { // Adjust check as needed (e.g., small epsilon value)
+                  jumpChicken(direction: SCNVector3(x: 0, y: 10, z: 0))
         }
         if element == gamepad.buttonB {
             chicken.runAction(SCNAction.playAudio(slapSound, waitForCompletion: true))
@@ -145,10 +153,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         chicken.addAudioPlayer(musicPlayer)
     }
     
-    func jumpChicken(direction: SCNVector3){
-        let moveAction = SCNAction.move(by: direction, duration: TimeInterval(3) )
-        chicken.runAction(moveAction)
-        camera.runAction(moveAction)
+    func jumpChicken(direction: SCNVector3) {
+      // Apply an upward force to simulate jump
+      chicken.physicsBody?.applyForce(SCNVector3(x: 0, y: 5, z: 0), at: SCNVector3(x: 0, y: 0.5, z: 0), asImpulse: true)
     }
     
     func moveCamera(direction:SCNVector3){
@@ -161,23 +168,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
         chicken.runAction(moveAction)
     }
+    
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+      let nodeA = contact.nodeA
+      let nodeB = contact.nodeB
 
-    // Override this method to perform per-frame game logic
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        let scene = SCNScene(named: "art.scnassets/Stage/Rumah Ayam.scn")!
-        guard let cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true) else { return }
-        
-        // Camera offset from target
-        _ = SCNVector3(x: 0, y: 2, z: -5) // Adjust offset values for desired view
-        
-        // Calculate new camera position based on target and offset
-        let newCameraPosition = chicken.position
-        
-        // Animate camera movement smoothly
-        SCNTransaction.begin()
-        SCNTransaction.animationDuration = 0.1
-        cameraNode.position = newCameraPosition
-        SCNTransaction.commit()
+      if (nodeA == chicken && nodeB == object) || (nodeA == object && nodeB == chicken) {
+        print("Kena Plane")
+      } else if (nodeA == chicken && nodeB == root) || (nodeA == root && nodeB == chicken) {
+        print("Kena Lantai")
+      }
     }
 
 

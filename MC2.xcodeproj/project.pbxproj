@@ -17,7 +17,6 @@
 		FA3B4E482BF8FDC100417B10 /* MC2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3B4E472BF8FDC100417B10 /* MC2UITests.swift */; };
 		FA3B4E4A2BF8FDC100417B10 /* MC2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3B4E492BF8FDC100417B10 /* MC2UITestsLaunchTests.swift */; };
 		FA4245C82C098966007FF8B1 /* footstep chicken.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA4245C62C098966007FF8B1 /* footstep chicken.mp3 */; };
-		FAD339BA2C0804140082D43A /* GameViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD339B92C0804140082D43A /* GameViewController2.swift */; };
 		FAD339BD2C0807930082D43A /* MotionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD339BC2C0807930082D43A /* MotionHelper.swift */; };
 		FAD33A382C081EE50082D43A /* ChickenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD33A372C081EE50082D43A /* ChickenModel.swift */; };
 		FAD33A3A2C0821300082D43A /* ES_Always Too Much - Spectacles Wallet and Watch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FAD33A392C0821300082D43A /* ES_Always Too Much - Spectacles Wallet and Watch.mp3 */; };
@@ -59,7 +58,6 @@
 		FA3B4E472BF8FDC100417B10 /* MC2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MC2UITests.swift; sourceTree = "<group>"; };
 		FA3B4E492BF8FDC100417B10 /* MC2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MC2UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FA4245C62C098966007FF8B1 /* footstep chicken.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "footstep chicken.mp3"; sourceTree = "<group>"; };
-		FAD339B92C0804140082D43A /* GameViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController2.swift; sourceTree = "<group>"; };
 		FAD339BC2C0807930082D43A /* MotionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionHelper.swift; sourceTree = "<group>"; };
 		FAD33A372C081EE50082D43A /* ChickenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChickenModel.swift; sourceTree = "<group>"; };
 		FAD33A392C0821300082D43A /* ES_Always Too Much - Spectacles Wallet and Watch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ES_Always Too Much - Spectacles Wallet and Watch.mp3"; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 				E6E746FA2C0D5B9F005E7CFF /* Clothes_baseColor.jpeg */,
 				FA3B4E302BF8FDC100417B10 /* Assets.xcassets */,
 				FA3B4E322BF8FDC100417B10 /* LaunchScreen.storyboard */,
-				FAD339B92C0804140082D43A /* GameViewController2.swift */,
 				FAD33A422C082D650082D43A /* GameViewMain.swift */,
 			);
 			path = MC2;
@@ -333,7 +330,6 @@
 			files = (
 				FA3B4E2C2BF8FDC000417B10 /* GameViewController.swift in Sources */,
 				FAD33A382C081EE50082D43A /* ChickenModel.swift in Sources */,
-				FAD339BA2C0804140082D43A /* GameViewController2.swift in Sources */,
 				FA3B4E282BF8FDC000417B10 /* AppDelegate.swift in Sources */,
 				FAD339BD2C0807930082D43A /* MotionHelper.swift in Sources */,
 				FAD33A432C082D650082D43A /* GameViewMain.swift in Sources */,
