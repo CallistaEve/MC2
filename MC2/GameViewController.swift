@@ -165,7 +165,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
 
     func moveChicken(direction: SCNVector3) {
         let moveAction = SCNAction.move(by: direction, duration: TimeInterval(5) )
-        chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
+//        chicken.runAction(SCNAction.playAudio(walkSound, waitForCompletion: true))
         chicken.runAction(moveAction)
     }
     
