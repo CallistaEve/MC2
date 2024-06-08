@@ -14,6 +14,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     
     var chicken: SCNNode!
     var object: SCNNode!
+    var text: SCNNode!
     var root: SCNNode!
     var camera: SCNNode!
     
@@ -67,12 +68,41 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         ambientLightNode.light!.type = .ambient
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
+        
+        let dummyNode = SCNNode()
+        scene.rootNode.addChildNode(dummyNode)
 
         // Retrieve the objects node
         chicken = scene.rootNode.childNode(withName: "NewChicken reference", recursively: true)
-        object = scene.rootNode.childNode(withName: "plane", recursively: true)
+//        object = scene.rootNode.childNode(withName: "plane", recursively: true)
         root = scene.rootNode.childNode(withName: "root", recursively: true)
         camera = scene.rootNode.childNode(withName: "cameraFocus", recursively: true)
+        
+        if let dummyNode = scene.rootNode.childNode(withName: "dummyNode", recursively: false) {
+//          dummyNode.position = SCNVector3(0, 0, 0)
+          // ... rest of your code using dummyNode
+        } else {
+            // Handle the case where DummyNode is not found (optional)
+            print("Warning: DummyNode not found in scene")
+        }
+
+        scene.rootNode.enumerateChildNodes { (node, _) in
+           if (node.name == "NewChicken reference") {
+             chicken = node
+             chicken.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: chicken, options: nil ))
+             // ... (rest of chicken physics body setup)
+               chicken.physicsBody?.categoryBitMask = bitmask.player.rawValue  //
+             chicken.physicsBody?.collisionBitMask = bitmask.object.rawValue // Combine categories (floor & object)
+               print("Ayam")
+           }
+            else if (node.name == "root") {
+             object = node
+             object.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: object, options: nil ))
+             // ... (rest of cone physics body setup)
+               object.physicsBody?.categoryBitMask = bitmask.object.rawValue  // Set cone's category to object
+                print("Rumah")
+           }
+         }
         
         
         let moveAction = SCNAction.move(by: SCNVector3(0, 0, 0), duration: 0)
@@ -99,6 +129,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
 
         // Set the scene to the view
         scnView.scene = scene
+        
+        scnView.allowsCameraControl = true
         
                 // Set the view's delegate
 //                scnView.delegate = self
